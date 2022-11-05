@@ -99,8 +99,9 @@ public class MainActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<DataSnapshot> task) {
                 if(task.isSuccessful()){
                     if(task.getResult().getValue()!=null){
-                        //Toast.makeText(MainActivity.this,"Data downloaded : "+task.getResult().getValue().toString(),Toast.LENGTH_LONG).show();
-                        textView.setText(task.getResult().toString());
+                        Toast.makeText(MainActivity.this,"Data downloaded : "+task.getResult().getValue().toString(),Toast.LENGTH_LONG).show();
+                        //User user = task.getResult().getValue(User.class);
+                        //textView.setText("Name : " + task.getResult().getValue(User.class).getName().toString());
                     }
                     else{
                         Toast.makeText(MainActivity.this,"User not available !",Toast.LENGTH_LONG).show();
