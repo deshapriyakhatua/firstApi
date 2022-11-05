@@ -7,11 +7,15 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCanceledListener;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -23,18 +27,31 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
+        // upload button
         Button button = findViewById(R.id.button);
 
-//        button.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                upLoadToDatabase();
-//            }
-//        });
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                upLoadToDatabase();
+                Toast.makeText(MainActivity.this,"Upload Button pressed",Toast.LENGTH_SHORT).show();
+            }
+        });
 
+        // download button
+        Button button1 = findViewById(R.id.button2);
+
+        button1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                downLoadToDatabase();
+                Toast.makeText(MainActivity.this,"Download Button pressed",Toast.LENGTH_SHORT).show();
+            }
+        });
 
     }
 
+    // upload data
     private void upLoadToDatabase() {
         // accessing from xml
         EditText editTextUserName = findViewById(R.id.editTextUserName);
@@ -54,20 +71,54 @@ public class MainActivity extends AppCompatActivity {
         // uploading to firebase realTime Database
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         DatabaseReference reference = firebaseDatabase.getReference("users-data");
-        reference.child(userName).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+        reference.child(userName).setValue(user).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                Toast.makeText(MainActivity.this,"Successfuly Uploaded",Toast.LENGTH_LONG).show();
+            public void onSuccess(Void unused) {
+                Toast.makeText(MainActivity.this,"Successfully Uploaded",Toast.LENGTH_LONG).show();
             }
-        }).addOnCanceledListener(new OnCanceledListener() {
+        }).addOnFailureListener(new OnFailureListener() {
             @Override
-            public void onCanceled() {
-                Toast.makeText(MainActivity.this,"Upload failed",Toast.LENGTH_LONG).show();
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(MainActivity.this,"Upload failed : "+e.getMessage().toString(),Toast.LENGTH_LONG).show();
             }
         });
 
     }
 
+    // download data
+    private  void downLoadToDatabase(){
+
+        TextView textView = findViewById(R.id.textView);
+        EditText editTextUserName = findViewById(R.id.editTextUserNameDownload);
+        String userName = editTextUserName.getText().toString();
+
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        DatabaseReference databaseReference = firebaseDatabase.getReference();
+        databaseReference.child("users-data").child(userName).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if(task.isSuccessful()){
+                    if(task.getResult().getValue()!=null){
+                        //Toast.makeText(MainActivity.this,"Data downloaded : "+task.getResult().getValue().toString(),Toast.LENGTH_LONG).show();
+                        textView.setText(task.getResult().toString());
+                    }
+                    else{
+                        Toast.makeText(MainActivity.this,"User not available !",Toast.LENGTH_LONG).show();
+                    }
+                }
+                else{
+                    Toast.makeText(MainActivity.this,"Download failed : "+task.getException(),Toast.LENGTH_LONG).show();
+                }
+            }
+        }).addOnCanceledListener(new OnCanceledListener() {
+            @Override
+            public void onCanceled() {
+                Toast.makeText(MainActivity.this,"Download failed",Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    // create User class
     public class User{
         String name;
         String mobile;

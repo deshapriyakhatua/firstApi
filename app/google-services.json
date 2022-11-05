@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "245354862453",
+    "project_id": "firstapi-1a5f8",
+    "storage_bucket": "firstapi-1a5f8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:245354862453:android:f574844f6a6f0c7dcd253c",
+        "android_client_info": {
+          "package_name": "com.example.firstapi"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "245354862453-79042juk221bq998j5sae368tq57pcvr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAlAJlmZ9kstpQVUcrvbIR914wfSstJUGM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "245354862453-79042juk221bq998j5sae368tq57pcvr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
