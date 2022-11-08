@@ -19,6 +19,8 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.HashMap;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -99,9 +101,10 @@ public class MainActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<DataSnapshot> task) {
                 if(task.isSuccessful()){
                     if(task.getResult().getValue()!=null){
-                        Toast.makeText(MainActivity.this,"Data downloaded : "+task.getResult().getValue().toString(),Toast.LENGTH_LONG).show();
-                        //User user = task.getResult().getValue(User.class);
-                        //textView.setText("Name : " + task.getResult().getValue(User.class).getName().toString());
+
+                        Toast.makeText(MainActivity.this,"Data downloaded : " + task.getResult().child("name").getValue(),Toast.LENGTH_LONG).show();
+
+                        textView.setText("Name : " + task.getResult().child("name").getValue() + "\n" + "Mobile : " + task.getResult().child("mobile").getValue() + "\n" + "Pin : " + task.getResult().child("pin").getValue());
                     }
                     else{
                         Toast.makeText(MainActivity.this,"User not available !",Toast.LENGTH_LONG).show();
