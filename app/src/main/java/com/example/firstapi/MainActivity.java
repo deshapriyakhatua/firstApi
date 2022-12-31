@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    // upload data
+    // upload data 
     private void upLoadToDatabase() {
         // accessing from xml
         EditText editTextUserName = findViewById(R.id.editTextUserName);
